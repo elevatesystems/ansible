@@ -437,6 +437,7 @@ def main():
     if fetch:
         if state == 'present':
             if is_different(module, fetch):
+                module.params['fingerprint'] = fetch['fingerprint']
                 update(module, self_link(module), kind)
                 fetch = fetch_resource(module, self_link(module), kind)
                 changed = True
@@ -480,6 +481,7 @@ def resource_to_request(module):
         u'name': module.params.get('name'),
         u'pathMatchers': UrlMapPathmatchersArray(module.params.get('path_matchers', []), module).to_request(),
         u'tests': UrlMapTestsArray(module.params.get('tests', []), module).to_request(),
+        u'fingerprint': module.params.get('fingerprint')
     }
     return_vals = {}
     for k, v in request.items():
